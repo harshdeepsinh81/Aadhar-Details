@@ -59,7 +59,9 @@ def mask_id(img,crops,model):
     for i in crops:
         if i["class"]==2:      #class 2 = "id"
             x1,y1,x2,y2=i["coords"]
-            cv2.rectangle(masked_image,(x1,y1),(x2,y2),(0,0,0),-1)
+            width=x2-x1
+            mask_width=int(width*0.65)
+            cv2.rectangle(masked_image,(x1,y1),(x1+mask_width,y2),(0,0,0),-1)
     return masked_image
 
 @app.route('/', methods=['POST'])
