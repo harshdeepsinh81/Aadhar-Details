@@ -1,5 +1,6 @@
 import streamlit as st
-import requests
+import requests, base64, io
+from PIL import Image
 
 st.title("Aadhar OCR")
 
@@ -19,7 +20,12 @@ if uploaded_file:
         if response.status_code == 200:
             data = response.json()
             st.success("Successfull")
-            st.json(data)
+            st.json(data["ocr"])
+
+            img_bytes = base64.b64decode(data["masked_image"])
+            img = Image.open(io.BytesIO(img_bytes))
+            st.image(img, width=400)
+
 
         else:
             st.error("Error: " + response.text)
